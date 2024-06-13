@@ -32,7 +32,7 @@ async function updateComputer(code, computer){
 
     // Si se encontro una key que no se esncuentra en nuestro modelo, retorna un error.
     if(!(uniqueProps.length == 0)){
-        return {'status': 500, 'msj': 'Error al actualizar fruta. Se quiere actualizar uno o varios campos que no existen!'}
+        return {'status': 500, 'msj': 'Error al actualizar computadora. Se quiere actualizar uno o varios campos que no existen!'}
     }
 
     await collection.updateOne({codigo: parseInt(code)}, {$set: computer})
@@ -41,13 +41,13 @@ async function updateComputer(code, computer){
         // updateOne retorna resultados. Uno de ellos es matchedCount el cual vale 1 si se modifico algun dato y
         // 0 si no lo hizo. Esto es para cuando me ingresen un codigo que no exista, me retorne un error.
         if(e.matchedCount===0){
-            result = {'status': 201, 'msj': 'Error al actualizar fruta, codigo ' + code + ' no encontrado!'}
+            result = {'status': 500, 'msj': 'Error al actualizar computadora, codigo ' + code + ' no encontrado!'}
         }else{
-            result = {'status': 201, 'msj': 'Fruta actualizada exitosamente!'}
+            result = {'status': 201, 'msj': 'Computadora actualizada exitosamente!'}
         }
     }).catch(err => { 
         console.error(err)
-        result = {'status': 500, 'msj': 'Error al actualizar fruta!'}
+        result = {'status': 500, 'msj': 'Error al actualizar computadora!'}
     }).finally(async () => { 
         await disconnectFromMongoDB(); 
     })
