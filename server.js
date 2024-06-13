@@ -1,6 +1,6 @@
 // Servidor. 
 const express = require('express');
-const { getAllComputers } = require('./controller/computerController');
+const { getAllComputers,getComputer,nuevaComputadora } = require('./controller/computerController');
 const app = express();
 const PORT = process.env.PORT || 3008;
 
@@ -24,6 +24,23 @@ app.get('/', (req, res) => {
 app.get('/api/computadoras', async (req, res) => {
     res.status(200).json(await getAllComputers());
 });
+
+
+// Se obtienen la computadora con el id ingresado.
+app.get('/api/computadoras/:id', async (req, res) => {
+    let id = parseInt(req.params.id);
+    const resultado=await getComputer(id);
+    res.status(resultado.status).send(resultado.data);
+});
+
+//se crea una computaora nueva 
+app.post('/api/computadoras',async (req,res)=>{
+    const computadora = req.body;
+    const resultado = await nuevaComputadora(computadora);
+    res.status(resultado.status).send(resultado.data);
+})
+
+
 
 app.get('*', (req, res) => {
     res.status(404).send('Lo siento, la página que buscas no existe.'); 
