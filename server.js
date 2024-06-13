@@ -1,6 +1,7 @@
 // Servidor. 
 const express = require('express');
-const { getAllComputers } = require('./controller/computerController');
+const { getAllComputers,
+        updateComputer} = require('./controller/computerController');
 const app = express();
 const PORT = process.env.PORT || 3008;
 
@@ -24,6 +25,20 @@ app.get('/', (req, res) => {
 app.get('/api/computadoras', async (req, res) => {
     res.status(200).json(await getAllComputers());
 });
+
+// PUT
+app.put('/api/computadoras/:id',async (req, res) => {
+    const code = req.params.id;
+    const data = req.body;
+
+    if(Object.keys(data).length === 0 && data.constructor === Object){
+        res.status(500).send('No se obtuvieron datos!');
+    }else{
+        const result = await updateComputer(code, data);
+        res.status(result.status).send(result.msj);
+    }
+})
+
 
 app.get('*', (req, res) => {
     res.status(404).send('Lo siento, la página que buscas no existe.'); 
