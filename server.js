@@ -48,7 +48,7 @@ app.get('/api/computadoras/:id', async (req, res) => {
     res.status(resultado.status).send(resultado.data);
 });
 
-//se crea una computaora nueva 
+// POSRT se crea una computaora nueva 
 app.post('/api/computadoras',async (req,res)=>{
     const computadora = req.body;
     const resultado = await nuevaComputadora(computadora);
