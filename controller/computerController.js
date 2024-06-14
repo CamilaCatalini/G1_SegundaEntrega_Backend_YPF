@@ -1,4 +1,5 @@
 const {connectToMongoDB, disconnectFromMongoDB} = require('../database/mongodb');
+const {checkCodeAndData} = require('./dataController');
 
 async function getAllComputers(){
     const db = await connectToMongoDB();
@@ -13,18 +14,23 @@ async function getAllComputers(){
 
 // METODO PUT (actualizar)
 async function updateComputer(code, computer){
+
+    // checkCodeAndData: funcion que corrobora los datos ingresados.
+    let dataOk = checkCodeAndData(code,computer);
+    if(!dataOk.state){
+        return dataOk
+    }
     
     const db = await connectToMongoDB();
     const data = db.db('ComputersCollection'); 
     const collection = data.collection('computers');
-    let result = {};
 
     // Modelo del objeto computadora. Servira para saber si en los datos que ingresaron hay un campo
     // que no exista para no agregarlo al modificar.
     const modelComputer = {"codigo": 1, "codigo": 1,
-                           "nombre": "Desktop Gaminggg",
+                           "nombre": "Desktop Gaming",
                            "precio": 999.99,
-                           "categoria": "Desktooop"}
+                           "categoria": "Desktop"}
                        
     // En uniqueProps se guardan las keys de computer(datos ingresados para modificar) que no se encuentren 
     // en modelComputer en forma de array. 
@@ -34,6 +40,8 @@ async function updateComputer(code, computer){
     if(!(uniqueProps.length == 0)){
         return {'status': 500, 'msj': 'Error al actualizar computadora. Se quiere actualizar uno o varios campos que no existen!'}
     }
+
+    let result;
 
     await collection.updateOne({codigo: parseInt(code)}, {$set: computer})
     .then( async e => {
@@ -52,7 +60,7 @@ async function updateComputer(code, computer){
         await disconnectFromMongoDB(); 
     })
 
-    return result;
+    return result
 }
 
 
