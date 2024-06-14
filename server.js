@@ -31,13 +31,16 @@ app.put('/api/computadoras/:id',async (req, res) => {
     const code = req.params.id;
     const data = req.body;
 
+    // Si probamos ingresar por ejemplo "77a" me devuelve "77" (Error solucionado en data.controller)
+    // console.log(parseInt(req.params.id))
+    
     if(Object.keys(data).length === 0 && data.constructor === Object){
         res.status(500).send('No se obtuvieron datos!');
     }else{
         const result = await updateComputer(code, data);
         res.status(result.status).send(result.msj);
     }
-})
+});
 
 
 app.get('*', (req, res) => {
