@@ -17,4 +17,34 @@ function checkCodeAndData(code,data){
     return {'state': true}
 }
 
-module.exports = {checkCodeAndData};
+function checkCode(code){
+
+    // Number(code) verifica que el codigo ingresado se un numero. 
+    // parseInt(req.params.id) funcionaba a medias, porque note que si mandabas "1e"
+    // me modificaba el objeto con codigo 1, cosa que esta mal porque yo no mande "1" sino "1e"
+    // Hecho de esta forma soluciono eso porque lo que hace es devolverme Nan si lo que le estoy pasando
+    // no se puede convertir en numero.
+
+    if(Number(code) && !code.includes('.')){
+        return {'state': true}
+    }else{
+        return {'state': false, 'status': 500, 'msj': 'Error en el codigo. Valor ingresado NO valido!'}
+    }
+
+}
+
+function checkComputadora(computadora){
+    // verifica que computadora  tenga CODIGO  y NOMBRE
+    // si se ingresa sin precio se lo inicializa con 0 
+    if(computadora.codigo === undefined || computadora.nombre === undefined ){
+        return {'state': false,'status':400,'msj':"Error en el formato de datos a crear"}
+    }else{
+        if(computadora.precio === undefined ) computadora.precio =0;
+        
+        return  {'state': true,'msj':computadora}
+        
+    }
+
+}
+
+module.exports = {checkCodeAndData,checkCode,checkComputadora};

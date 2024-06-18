@@ -1,5 +1,5 @@
 const {connectToMongoDB, disconnectFromMongoDB} = require('../database/mongodb');
-const {checkCodeAndData} = require('./dataController');
+const {checkCodeAndData,checkCode,checkComputadora} = require('./dataController');
 
 async function getAllComputers(){
     const db = await connectToMongoDB();
@@ -67,15 +67,21 @@ async function updateComputer(code, computer){
 async function getComputer(id){
     let result = {}
     const db = await connectToMongoDB();
-    if (!db) result={'status':404,'data':'Lo siento, no hay resultado para ese ID'};
     const data = db.db('ComputersCollection');
     
-    if(!isNaN(id)){
-        const resultado=await data.collection('computers').findOne({codigo:id})
-        resultado == null ? result={'status':404,'data':'Lo siento, no hay resultado para ese ID'}:
-                            result={'status':200,'data':resultado}; 
+    
+    let IdCheck= checkCode(id)
+    
+    if(IdCheck.state){
+        //result retorna status 404 si no hay computadoras
+        const computerAct=await data.collection('computers')
+                    .findOne({codigo:parseInt(id)})
+        computerAct == null ? result={'status':404,'msj':'Lo siento, no hay resultado para ese ID'}:
+                            result={'status':200,'msj':computerAct}; 
     } else{
-        result= {'status':400,'data':'Lo siento, el id que buscas no es númerico.'};
+        
+        result=IdCheck;
+        console.log(result)
     }
     await disconnectFromMongoDB();
     return result;
@@ -85,23 +91,27 @@ async function nuevaComputadora(computadora){
     let result = {}
 
     const db = await connectToMongoDB();
-    if (!db) result={'status':404,'data':'Lo siento, no hay resultado para ese ID'};
     const data = db.db('ComputersCollection');
+
+    // verificacion de los campos de computadora 
+    const computadoraCheck = checkComputadora(computadora)
    
-    if ( computadora === undefined ){
-        result={'status':400,'data':"Error en el formato de datos a crear"}
+    if (! computadoraCheck.state  ){
+        result=computadoraCheck;
+        await disconnectFromMongoDB();
     }else {
          await data.collection('computers').insertOne(computadora)
                     .then(()=>{
-                        result={'status':200,'data':computadora}
+                        result={'status':200,'msj':computadora}
                     })
                     .catch(error=>{
                         console.error(error)
-                        result={'status':500,'data':'Error al crear nueva fruta'}
+                        result={'status':500,'msj':'Error al crear nueva fruta'}
                     })
                     .finally(async()=>{
                         await disconnectFromMongoDB();
                     });
+        console.log(computadora)
     }
     return result
 }
