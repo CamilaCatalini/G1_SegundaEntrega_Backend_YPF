@@ -130,17 +130,13 @@ async function borrarComputer(id){
     
     if(IdCheck.state){
         //result retorna status 404 si no hay computadoras con el id ingresado
-       //db.connect()
-       //.then(() => {
-            const computerAct = data.collection('computers');
-            await computerAct.deleteOne({ codigo: parseInt(id)});
-       //})
-       .then((resultado) =>{
-        if(resultado.deletedCount === 0){
-            result={'status':404,'msj':'Lo siento, no hay resultado para ese ID'};
-        }else {
-            console.log('Equipo borrado.');
-            result={'status':200,'msj':'Equipo borrado.'};
+        const computerAct = data.collection('computers');
+        await computerAct.deleteOne({ codigo: parseInt(id)}).then((resultado) =>{
+            if(resultado.deletedCount === 0){
+                result={'status':404,'msj':'Lo siento, no hay resultado para ese ID'};
+            }else {
+                console.log('Equipo borrado.');
+                result={'status':200,'msj':'Equipo borrado.'};
         }
         })
         .catch(error => {
