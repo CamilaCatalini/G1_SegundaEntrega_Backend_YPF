@@ -42,13 +42,6 @@ app.get('/api/computadoras/:id', async (req, res) => {
 //descripcion: La descripción de la computadora.
 app.get('/api/computadoras/search', async (req, res) => {
     const datasearch = req.params.search;
-
-
-
-
-
-
-    
     const resultado=await getComputer(id);
     res.status(resultado.status).send(resultado.msj);
 });
