@@ -35,6 +35,24 @@ app.get('/api/computadoras/:id', async (req, res) => {
     res.status(resultado.status).send(resultado.msj);
 });
 
+// Obtener un documento por su nombre o categoría.
+// http://localhost:3008/api/computadoras/search
+//Parámetros de consulta:
+//nombre: El nombre de la computadora.
+//descripcion: La descripción de la computadora.
+app.get('/api/computadoras/search', async (req, res) => {
+    const datasearch = req.params.search;
+
+
+
+
+
+
+    
+    const resultado=await getComputer(id);
+    res.status(resultado.status).send(resultado.msj);
+});
+
 // http://localhost:3008/api/computadoras
 // POST =  crea una computaora nueva 
 app.post('/api/computadoras',async (req,res)=>{
