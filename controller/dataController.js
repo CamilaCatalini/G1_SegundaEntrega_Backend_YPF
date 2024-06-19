@@ -8,10 +8,10 @@ function checkCodeAndData(code,data){
 
     if(Number(code) && !code.includes('.')){
         if(!data.precio && Number(data.precio)){
-            return {'state': false, 'status': 500, 'msj': 'Error en el precio. Valor ingresado NO valido!'}
+            return {'state': false, 'status': 400, 'msj': 'Error en el precio. Valor ingresado NO valido!'}
         }
     }else{
-        return {'state': false, 'status': 500, 'msj': 'Error en el codigo. Valor ingresado NO valido!'}
+        return {'state': false, 'status': 404, 'msj': 'Error en el codigo. Valor ingresado NO valido!'}
     }
 
     return {'state': true}
@@ -28,7 +28,7 @@ function checkCode(code){
     if(Number(code) && !code.includes('.')){
         return {'state': true}
     }else{
-        return {'state': false, 'status': 500, 'msj': 'Error en el codigo. Valor ingresado NO valido!'}
+        return {'state': false, 'status': 404, 'msj': 'Error en el codigo. Valor ingresado NO valido!'}
     }
 
 }
