@@ -48,7 +48,7 @@
 
 >| EndPoints       | Descripcion                       |
 >|-----------------|-----------------------------------|
->| GET : http://localhost:3008/computadoras  | Retorna todos los documentos          |
+>| GET : http://localhost:3008/api/computadoras  | Retorna todos los documentos          |
 >| GET : http://localhost:3008/api/computadoras/:codigo  | Retorna un documento por codigo        |
 >| GET : http://localhost:3008/api/computadoras/search | Retorna documentos segun su nombre o su categoria    |
 >| POST : http://localhost:3008/api/computadoras | Crea un documento computadora            |

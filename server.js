@@ -1,7 +1,7 @@
 // Servidor. 
 const express = require('express');
 const { getAllComputers,getComputer,nuevaComputadora,
-        updateComputer} = require('./controller/computerController');
+        updateComputer,borrarComputer} = require('./controller/computerController');
 const app = express();
 const PORT = process.env.PORT || 3008;
 
@@ -26,6 +26,23 @@ app.get('/api/computadoras', async (req, res) => {
     res.status(200).json(await getAllComputers());
 });
 
+// Se obtiene la computadora con el id ingresado.
+app.get('/api/computadoras/:id', async (req, res) => {
+    // la verificacion del id se hace en datacontroller.js
+    // la conversion del string id a number id se hace en computerController.js
+    let id = req.params.id;
+    const resultado=await getComputer(id);
+    res.status(resultado.status).send(resultado.msj);
+});
+
+// http://localhost:3008/api/computadoras
+// POST =  crea una computaora nueva 
+app.post('/api/computadoras',async (req,res)=>{
+    const computadora = req.body;
+    const resultado = await nuevaComputadora(computadora);
+    res.status(resultado.status).send(resultado.msj);
+})
+
 // PUT
 app.put('/api/computadoras/:id',async (req, res) => {
     const code = req.params.id;
@@ -42,25 +59,14 @@ app.put('/api/computadoras/:id',async (req, res) => {
     }
 });
 
-
-
-// Se obtienen la computadora con el id ingresado.
-app.get('/api/computadoras/:id', async (req, res) => {
-    // la verificacion del id se hace en datacontroller.js
-    // la conversion del string id a number id se hace en conputertController
-    let id = req.params.id;
-    const resultado=await getComputer(id);
-    res.status(resultado.status).send(resultado.msj);
-});
-
-// http://localhost:3008/api/computadoras
-// POST =  crea una computaora nueva 
-app.post('/api/computadoras',async (req,res)=>{
-    const computadora = req.body;
-    const resultado = await nuevaComputadora(computadora);
+// DELETE
+app.delete('/api/computadoras/:id',async (req,res) => {
+    const id = req.params.id; // id del elemento a eliminar
+    const resultado = await borrarComputer(id);
     res.status(resultado.status).send(resultado.msj);
 })
 
+//respuesta para rutas inexistentes 
 
 
 app.get('*', (req, res) => {
