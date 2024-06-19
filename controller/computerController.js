@@ -67,7 +67,6 @@ async function updateComputer(code, computer){
     return result
 }
 
-
 async function getComputer(id){
     let result = {}
     const db = await connectToMongoDB();
