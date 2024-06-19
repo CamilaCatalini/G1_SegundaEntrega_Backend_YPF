@@ -130,11 +130,11 @@ async function borrarComputer(id){
     
     if(IdCheck.state){
         //result retorna status 404 si no hay computadoras con el id ingresado
-       db.connect()
-       .then(() => {
+       //db.connect()
+       //.then(() => {
             const computerAct = data.collection('computers');
-            return computerAct.deleteOne({ codigo: parseInt(id)});
-       })
+            await computerAct.deleteOne({ codigo: parseInt(id)});
+       //})
        .then((resultado) =>{
         if(resultado.deletedCount === 0){
             result={'status':404,'msj':'Lo siento, no hay resultado para ese ID'};
@@ -147,7 +147,7 @@ async function borrarComputer(id){
             result={'status':400,'msj':'Error al eliminar ruta'};
         })
         .finally(() =>{
-            db.close();
+            await disconnectFromMongoDB(); 
         });
        
     } else{
