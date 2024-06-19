@@ -133,7 +133,7 @@ async function borrarComputer(id){
        //db.connect()
        //.then(() => {
             const computerAct = data.collection('computers');
-            await computerAct.deleteOne({ codigo: parseInt(id)});
+            await computerAct.deleteOne({ codigo: parseInt(id)})
        //})
        .then((resultado) =>{
         if(resultado.deletedCount === 0){
@@ -146,7 +146,7 @@ async function borrarComputer(id){
         .catch(error => {
             result={'status':400,'msj':'Error al eliminar ruta'};
         })
-        .finally(() =>{
+        .finally(async() =>{
             await disconnectFromMongoDB(); 
         });
        
