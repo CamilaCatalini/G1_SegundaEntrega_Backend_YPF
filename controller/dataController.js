@@ -47,4 +47,12 @@ function checkComputadora(computadora){
 
 }
 
-module.exports = {checkCodeAndData,checkCode,checkComputadora};
+function checkSearch(dataSearch){
+    if(dataSearch === undefined){
+        return {'state': false,'status':400,'msj':"Error en el formato de datos ingresados"}
+    }else{
+        return  {'state': true,'msj':dataSearch}
+    }
+}
+
+module.exports = {checkCodeAndData,checkCode,checkComputadora,checkSearch};

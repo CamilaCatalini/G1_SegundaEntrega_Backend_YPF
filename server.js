@@ -1,6 +1,6 @@
 // Servidor. 
 const express = require('express');
-const { getAllComputers,getComputer,nuevaComputadora,
+const { getAllComputers,getComputer,searchComputer,nuevaComputadora,
         updateComputer,borrarComputer} = require('./controller/computerController');
 const app = express();
 const PORT = process.env.PORT || 3008;
@@ -40,9 +40,10 @@ app.get('/api/computadoras/:id', async (req, res) => {
 //Parámetros de consulta:
 //nombre: El nombre de la computadora.
 //descripcion: La descripción de la computadora.
-app.get('/api/computadoras/search', async (req, res) => {
-    const datasearch = req.params.search;
-    const resultado=await getComputer(id);
+app.get('/computadoras/search', async (req, res) => {
+    const dataSearch = req.params.search;//recibe parametros de busqueda
+    const resultado = await searchComputer(dataSearch); // envia data recibida, como paramtro a funcion
+    
     res.status(resultado.status).send(resultado.msj);
 });
 

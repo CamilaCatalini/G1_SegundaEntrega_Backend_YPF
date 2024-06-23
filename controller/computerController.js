@@ -1,5 +1,5 @@
 const {connectToMongoDB, disconnectFromMongoDB} = require('../database/mongodb');
-const {checkCodeAndData,checkCode,checkComputadora} = require('./dataController');
+const {checkCodeAndData,checkCode,checkComputadora,checkSearch} = require('./dataController');
 
 async function getAllComputers(){
     const db = await connectToMongoDB();
@@ -90,6 +90,29 @@ async function getComputer(id){
     return result;
 }
 
+async function searchComputer(dataSearch){
+    let result = {}
+    // verificacion de los campos de computadora 
+    const cS = checkSearch(dataSearch);
+    const db = await connectToMongoDB();
+    const data = db.db('ComputersCollection');
+    if (cS.state){
+        const regex = new RegExp(dataSearch,'i');
+        const searchName = await data.collection('computers')
+        .find({$or:[{ nombre: regex},{ categoria: regex}]}).toArray();
+        if ((searchName.length) == 0){
+            result = {'status':404,'msj':'Lo siento, no hay resultados coincidentes'}
+            return;
+        }
+    } else{
+        result=cS;
+        console.log(result)
+    }
+    await disconnectFromMongoDB();
+    return result;
+}
+
+
 async function nuevaComputadora(computadora){
     let result = {}
 
@@ -158,4 +181,5 @@ async function borrarComputer(id){
     return result;
 }
 
-module.exports = {getAllComputers,updateComputer,getComputer,nuevaComputadora,borrarComputer};
+
+module.exports = {getAllComputers,updateComputer,getComputer,searchComputer,nuevaComputadora,borrarComputer};
