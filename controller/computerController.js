@@ -64,7 +64,7 @@ async function updateComputer(code, computer){
         await disconnectFromMongoDB(); 
     })
 
-    return result
+    return result;
 }
 
 async function getComputer(id){
@@ -73,7 +73,7 @@ async function getComputer(id){
     const data = db.db('ComputersCollection');
     
     
-    let IdCheck= checkCode(id)
+    let IdCheck= checkCode(id);
     
     if(IdCheck.state){
         //result retorna status 404 si no hay computadoras
@@ -90,26 +90,36 @@ async function getComputer(id){
     return result;
 }
 
-async function searchComputer(dataSearch){
-    let result = {}
-    // verificacion de los campos de computadora 
+async function searchComputer(dataSearch, nombre, categoria){
+    let res = {}
+    // verificacion de los parámetros ingresados 
     const cS = checkSearch(dataSearch);
+    //conexión a base de datos
     const db = await connectToMongoDB();
     const data = db.db('ComputersCollection');
+    
+    let searchName={};
     if (cS.state){
-        const regex = new RegExp(dataSearch,'i');
-        const searchName = await data.collection('computers')
-        .find({$or:[{ nombre: regex},{ categoria: regex}]}).toArray();
-        if ((searchName.length) == 0){
-            result = {'status':404,'msj':'Lo siento, no hay resultados coincidentes'}
-            return;
-        }
+        if( nombre && categoria){
+            searchName = {$or:[ { nombre: {$regex: nombre, $options: 'i'} },
+                    { categoria: { $regex: categoria, $options: 'i' } } ] 
+            };
+        }else if (nombre){
+            searchName = { nombre: {$regex: nombre, $options: 'i'} };
+        }else if(categoria){
+            searchName = { categoria: {$regex: categoria, $options: 'i'} };
+        } 
+        const searchPC= await data.collection('computers').find(searchName);
+        const PC= await searchPC.toArray();
+        ((PC.length) == 0) ? 
+        res = {'status': 404 , 'msj':'Lo siento, no hay resultados coincidentes'}:
+        res={'status':200,'msj':PC};
     } else{
-        result=cS;
-        console.log(result)
+        res=cS;
+        console.log(res)
     }
     await disconnectFromMongoDB();
-    return result;
+    return res;
 }
 
 

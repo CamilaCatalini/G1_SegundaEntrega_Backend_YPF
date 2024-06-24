@@ -49,9 +49,13 @@ function checkComputadora(computadora){
 
 function checkSearch(dataSearch){
     if(dataSearch === undefined){
-        return {'state': false,'status':400,'msj':"Error en el formato de datos ingresados"}
+        return {'state': false,'status':400,'msj':'Error en el formato de datos ingresados'};
     }else{
-        return  {'state': true,'msj':dataSearch}
+        if (dataSearch.length === 0){
+            return {'state': false,'status':400,'msj':'No llegan parámetros'};  
+        }else{
+            return  {'state': true,'msj':dataSearch};
+        }
     }
 }
 
