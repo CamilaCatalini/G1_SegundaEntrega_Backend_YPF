@@ -36,7 +36,7 @@ app.get('/api/computadoras/:id', async (req, res) => {
 });
 
 // Obtener un documento por su nombre o categoría.
-// http://localhost:3008/api/computadoras/search
+// http://localhost:3008/api/computadoras/:search
 //Parámetros de consulta:
 //nombre: El nombre de la computadora.
 //descripcion: La descripción de la computadora.
