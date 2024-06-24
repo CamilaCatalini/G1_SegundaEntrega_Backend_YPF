@@ -138,7 +138,7 @@ async function nuevaComputadora(computadora){
                     .finally(async()=>{
                         await disconnectFromMongoDB();
                     });
-        console.log(computadora)
+        console.log(computadora);
     }
     return result
 }
