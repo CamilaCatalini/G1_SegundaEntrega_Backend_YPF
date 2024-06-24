@@ -102,10 +102,11 @@ async function searchComputer(dataSearch){
         .find({$or:[{ nombre: regex},{ categoria: regex}]}).toArray();
         if ((searchName.length) == 0){
             result = {'status':404,'msj':'Lo siento, no hay resultados coincidentes'}
-            return;
+        }else{
+            result={'status':200,'msj':searchName};
         }
     } else{
-        result=cS;
+        result = cS;
         console.log(result)
     }
     await disconnectFromMongoDB();

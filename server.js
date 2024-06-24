@@ -40,8 +40,9 @@ app.get('/api/computadoras/:id', async (req, res) => {
 //Parámetros de consulta:
 //nombre: El nombre de la computadora.
 //descripcion: La descripción de la computadora.
-app.get('/computadoras/search', async (req, res) => {
+app.get('/computadoras/:search', async (req, res) => {
     const dataSearch = req.params.search;//recibe parametros de busqueda
+    console.log(dataSearch)
     const resultado = await searchComputer(dataSearch); // envia data recibida, como paramtro a funcion
     
     res.status(resultado.status).send(resultado.msj);
