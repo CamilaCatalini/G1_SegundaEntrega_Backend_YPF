@@ -40,13 +40,12 @@ app.get('/api/computadoras/:id', async (req, res) => {
 //Parámetros de consulta:
 //nombre: El nombre de la computadora.
 //descripcion: La descripción de la computadora.
-app.get('/api/computadoras/search', async (req, res) => {
+app.get('/computadoras/:search', async (req, res) => {
+    const dataSearch = req.params.search;//recibe parametros de busqueda
+    console.log(dataSearch)
+    const resultado = await searchComputer(dataSearch); // envia data recibida, como paramtro a funcion
     
-    const dataSearch = Object.keys(req.query);
-    const { nombre, categoria } = req.query;//recibe parametros de busqueda
-    const result = await searchComputer(dataSearch, nombre, categoria); // envia data recibida, como paramtro a funcion
-    
-    res.status(result.status).json(result.msj);
+    res.status(resultado.status).send(resultado.msj);
 });
 
 // http://localhost:3008/api/computadoras
