@@ -7,7 +7,7 @@
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Montserrat&pause=1000&color=FFFFFFC8&background=000000CD&random=false&width=435&lines=Grupo+1+%7C+Backend+Ingenias%2B+YPF)](https://git.io/typing-svg)
 </div>
 
-- Fecha de entrega: 19/06 | 17:00hs
+- Fecha de entrega: 24/06 | 17:00hs
 
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"><br><br>
 
