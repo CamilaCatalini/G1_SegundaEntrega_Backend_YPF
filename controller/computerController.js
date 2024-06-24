@@ -90,38 +90,28 @@ async function getComputer(id){
     return result;
 }
 
-async function searchComputer(dataSearch, nombre, categoria){
-    let res = {}
-    // verificacion de los parámetros ingresados 
+async function searchComputer(dataSearch){
+    let result = {}
+    // verificacion de los campos de computadora 
     const cS = checkSearch(dataSearch);
-    //conexión a base de datos
     const db = await connectToMongoDB();
     const data = db.db('ComputersCollection');
-    
-    let searchName={};
     if (cS.state){
-        if( nombre && categoria){
-            searchName = {$or:[ { nombre: {$regex: nombre, $options: 'i'} },
-                    { categoria: { $regex: categoria, $options: 'i' } } ] 
-            };
-        }else if (nombre){
-            searchName = { nombre: {$regex: nombre, $options: 'i'} };
-        }else if(categoria){
-            searchName = { categoria: {$regex: categoria, $options: 'i'} };
-        } 
-        const searchPC= await data.collection('computers').find(searchName);
-        const PC= await searchPC.toArray();
-        ((PC.length) == 0) ? 
-        res = {'status': 404 , 'msj':'Lo siento, no hay resultados coincidentes'}:
-        res={'status':200,'msj':PC};
+        const regex = new RegExp(dataSearch,'i');
+        const searchName = await data.collection('computers')
+        .find({$or:[{ nombre: regex},{ categoria: regex}]}).toArray();
+        if ((searchName.length) == 0){
+            result = {'status':404,'msj':'Lo siento, no hay resultados coincidentes'}
+        }else{
+            result={'status':200,'msj':searchName};
+        }
     } else{
-        res=cS;
-        console.log(res)
+        result = cS;
+        console.log(result)
     }
     await disconnectFromMongoDB();
-    return res;
+    return result;
 }
-
 
 async function nuevaComputadora(computadora){
     let result = {}
