@@ -139,7 +139,7 @@ async function nuevaComputadora(computadora){
                     });
         console.log(computadora)
     }
-    return result
+    return result;
 }
 
 
